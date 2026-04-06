@@ -3,6 +3,7 @@
 [![Deploy Azure](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-azure.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml)
 [![Deploy AWS](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-aws.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml)
 [![Deploy GCP](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-gcp.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml)
+[![Deploy Showcase](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-showcase.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-showcase.yml)
 [![Security Scan](https://github.com/elishatheodore/azure-infrastructure/workflows/security-scan.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml)
 
 A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azure, AWS, and GCP** with modular design and enterprise-grade CI/CD automation.
@@ -12,11 +13,12 @@ A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azur
 - **Multi-Cloud Terraform Modules** - Consistent infrastructure patterns across Azure, AWS, and GCP
 - **DRY Module Design** - Reusable networking and compute components
 - **Environment-Based Deployments** - dev, staging, and prod with tfvars separation
-- **CI/CD Automation** - GitHub Actions workflows with environment selection
-- **Security Scanning** - Automated tfsec and checkov security analysis
+- **CI/CD Automation** - GitHub Actions workflows with automated and manual control
+- **Security Scanning** - Manual tfsec and checkov security analysis
 - **Cost Estimation** - Infracost integration for cloud cost visibility
 - **Drift Detection** - Scheduled infrastructure monitoring and alerts
 - **Code Quality** - Terraform validation and formatting standards
+- **Showcase CI/CD** - Complete Azure infrastructure deployment with manual lifecycle management
 
 ## 🏗️ Architecture
 
@@ -149,15 +151,21 @@ Each cloud provider uses the same modular structure with cloud-specific variable
 
 ### GitHub Actions Workflows
 
-**Triggers:**
-- Push to main branch (auto-deploy)
-- Pull requests (plan only)
-- Manual dispatch (choose environment)
+**Automated Workflows:**
+- Push to main branch (auto-deploy multi-cloud modules)
+- Pull requests (plan only for multi-cloud modules)
+- Scheduled drift detection (daily)
+
+**Manual Workflows:**
+- Showcase deployment (plan/apply/destroy)
+- Security scanning (tfsec + checkov)
+- Terraform validation (module testing)
 
 **Environments:**
 - `dev` - Development/testing
 - `staging` - Pre-production
 - `prod` - Production
+- `production` - Showcase deployment environment
 
 **Required Secrets:**
 
@@ -180,16 +188,22 @@ Each cloud provider uses the same modular structure with cloud-specific variable
 
 The `azure_project_showcase/` directory includes its own CI/CD workflow (`deploy-showcase.yml`) that demonstrates:
 
-- **Automated Deployment**: Full Azure infrastructure deployment
-- **Manual Control**: Plan/Apply/Destroy options via workflow dispatch
+- **Manual Deployment**: Full Azure infrastructure deployment with manual control
+- **Complete Lifecycle**: Plan/Apply/Destroy options via workflow dispatch
 - **Remote State**: Backend configuration for production use
-- **Path-based Triggers**: Runs only when showcase files change
+- **Manual Trigger**: Only runs when manually executed (no auto-triggers)
 
 **Showcase Features:**
 - Resource Groups, VNets, Subnets, NSGs
 - Linux VMs with SSH access
 - Complete lifecycle management
 - Production-ready configuration
+
+**How to Use:**
+1. Go to GitHub Actions → "Deploy Azure Showcase"
+2. Click "Run workflow"
+3. Choose action: plan, apply, or destroy
+4. Execute manually
 
 ## 📦 Modules
 

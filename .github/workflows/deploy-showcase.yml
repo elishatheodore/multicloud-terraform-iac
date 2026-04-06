@@ -1,12 +1,6 @@
 name: Deploy Azure Showcase
 
 on:
-  push:
-    branches: [ main ]
-    paths: [ 'azure_project_showcase/**' ]
-  pull_request:
-    branches: [ main ]
-    paths: [ 'azure_project_showcase/**' ]
   workflow_dispatch:
     inputs:
       action:
@@ -28,7 +22,7 @@ env:
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.event.inputs.action == 'plan'
+    if: github.event.inputs.action == 'plan'
     
     steps:
     - name: Checkout
@@ -57,7 +51,7 @@ jobs:
 
   terraform-apply:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && (github.event.inputs.action == 'apply' || github.event_name == 'push')
+    if: github.event.inputs.action == 'apply'
     environment: production
     
     steps:
