@@ -16,7 +16,7 @@ A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azur
 - **Security Scanning** - Automated tfsec and checkov security analysis
 - **Cost Estimation** - Infracost integration for cloud cost visibility
 - **Drift Detection** - Scheduled infrastructure monitoring and alerts
-- **Code Quality** - Pre-commit hooks with terraform-docs, fmt, and validate
+- **Code Quality** - Terraform validation and formatting standards
 
 ## 🏗️ Architecture
 
@@ -45,10 +45,11 @@ azure-infrastructure/
 │   ├── deploy-aws.yml              # AWS deployment automation
 │   ├── deploy-gcp.yml              # GCP deployment automation
 │   ├── security-scan.yml           # Security scanning workflow
-│   └── drift-detection.yml         # Infrastructure drift monitoring
-├── .pre-commit-config.yaml          # Pre-commit hooks configuration
-├── .terraform-docs.yml              # Documentation generation config
+│   ├── drift-detection.yml         # Infrastructure drift monitoring
+│   └── validate.yml                 # Terraform validation workflow
 ├── CHANGELOG.md                     # Version history and release notes
+├── CONTRIBUTING.md                   # Contribution guide
+├── QUICKSTART.md                     # Quick start guide
 ├── shared/                         # Common abstractions
 │   ├── variables.tf                 # Shared variable definitions
 │   ├── locals.tf                   # Naming conventions
@@ -59,6 +60,7 @@ azure-infrastructure/
 │   ├── bootstrap-state-gcp.sh      # GCP remote state setup
 │   ├── deploy.sh                   # Original deployment script
 │   └── destroy.sh                  # Original destruction script
+├── tests/                          # Validation and testing framework
 ├── clouds/                         # Multi-cloud implementations
 │   ├── azure/                       # Azure modules
 │   │   ├── networking/              # VNet, subnets, NSG
@@ -222,19 +224,19 @@ This will:
 - Validate syntax and configuration
 - Report pass/fail status for each module
 
-### Pre-commit Hooks
+### Local Development
 
-Install pre-commit hooks for local development:
+For local development and testing:
 
 ```bash
-# Install pre-commit
-pip install pre-commit
+# Run validation tests
+./tests/validate.sh
 
-# Install hooks
-pre-commit install
+# Format Terraform files
+terraform fmt -recursive
 
-# Run manually
-pre-commit run --all-files
+# Validate modules
+terraform validate
 ```
 
 ## 🎯 Use Cases
