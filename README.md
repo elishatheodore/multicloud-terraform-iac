@@ -13,10 +13,10 @@ A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azur
 - **Multi-Cloud Terraform Modules** - Consistent infrastructure patterns across Azure, AWS, and GCP
 - **DRY Module Design** - Reusable networking and compute components
 - **Environment-Based Deployments** - dev, staging, and prod with tfvars separation
-- **CI/CD Automation** - GitHub Actions workflows with automated and manual control
+- **CI/CD Automation** - GitHub Actions workflows with manual control
 - **Security Scanning** - Manual tfsec and checkov security analysis
 - **Cost Estimation** - Infracost integration for cloud cost visibility
-- **Drift Detection** - Scheduled infrastructure monitoring and alerts
+- **Drift Detection** - Manual infrastructure monitoring and alerts
 - **Code Quality** - Terraform validation and formatting standards
 - **Showcase CI/CD** - Complete Azure infrastructure deployment with manual lifecycle management
 
@@ -52,7 +52,8 @@ azure-infrastructure/
 │   ├── bootstrap-state-aws.sh      # AWS remote state setup
 │   ├── bootstrap-state-gcp.sh      # GCP remote state setup
 │   ├── deploy.sh                   # Original deployment script
-│   └── destroy.sh                  # Original destruction script
+│   ├── destroy.sh                  # Original destruction script
+│   └── fix-commits.sh              # Commit message fixing script
 ├── tests/                          # Validation and testing framework
 ├── clouds/                         # Multi-cloud implementations
 │   ├── azure/                       # Azure modules
@@ -278,7 +279,7 @@ terraform validate
 
 **Production Workloads:**
 - Standardized infrastructure patterns
-- Automated deployments
+- Manual deployments with environment selection
 - Environment consistency
 
 ## 🔍 Cloud Comparison
