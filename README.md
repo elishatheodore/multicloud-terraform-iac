@@ -44,6 +44,7 @@ azure-infrastructure/
 │   ├── deploy-azure.yml            # Azure deployment automation
 │   ├── deploy-aws.yml              # AWS deployment automation
 │   ├── deploy-gcp.yml              # GCP deployment automation
+│   ├── deploy-showcase.yml         # Original Azure showcase CI/CD
 │   ├── security-scan.yml           # Security scanning workflow
 │   ├── drift-detection.yml         # Infrastructure drift monitoring
 │   └── validate.yml                 # Terraform validation workflow
@@ -74,7 +75,13 @@ azure-infrastructure/
 │       ├── networking/              # VPC network, subnetworks, firewall
 │       ├── compute/                 # Compute Engine instances
 │       └── examples/complete/       # Full deployment example
-└── azure_project_showcase/          # Original Azure project (preserved)
+└── azure_project_showcase/          # Original Azure project with CI/CD
+    ├── main.tf                      # Azure resources (RG, VNet, VMs)
+    ├── variables.tf                 # Variable definitions
+    ├── provider.tf                  # Azure provider
+    ├── output.tf                    # Resource outputs
+    ├── backend.tf                   # Remote state config
+    └── terraform.tfvars.example     # Configuration example
 ```
 
 ## 🚀 Getting Started
@@ -168,6 +175,21 @@ Each cloud provider uses the same modular structure with cloud-specific variable
 **GCP:**
 - `GCP_SA_KEY` (Service Account JSON)
 - `GCP_PROJECT_ID`
+
+### 🎯 Original Azure Showcase CI/CD
+
+The `azure_project_showcase/` directory includes its own CI/CD workflow (`deploy-showcase.yml`) that demonstrates:
+
+- **Automated Deployment**: Full Azure infrastructure deployment
+- **Manual Control**: Plan/Apply/Destroy options via workflow dispatch
+- **Remote State**: Backend configuration for production use
+- **Path-based Triggers**: Runs only when showcase files change
+
+**Showcase Features:**
+- Resource Groups, VNets, Subnets, NSGs
+- Linux VMs with SSH access
+- Complete lifecycle management
+- Production-ready configuration
 
 ## 📦 Modules
 

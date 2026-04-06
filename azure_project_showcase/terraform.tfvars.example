@@ -1,0 +1,31 @@
+# Azure Showcase Environment Variables
+# Copy this file to terraform.tfvars and update values
+
+# Resource Group Configuration
+resource_group_name = "azinfra-showcase-rg"
+location            = "East US"
+
+# Virtual Network Configuration
+vnet_name          = "azinfra-showcase-vnet"
+vnet_address_space = ["10.0.0.0/16"]
+
+# Subnet Configuration
+subnet_names    = ["azinfra-showcase-subnet", "azinfra-showcase-db-subnet"]
+subnet_prefixes = ["10.0.1.0/24", "10.0.2.0/24"]
+
+# Virtual Machine Configuration
+vm_count       = 2
+vm_size        = "Standard_B1s"
+admin_username = "azureuser"
+
+# SSH Configuration
+ssh_public_key_path = "~/.ssh/id_rsa.pub"
+ssh_source_cidr     = "10.0.0.0/8"
+
+# Resource Tags
+tags = {
+  Environment = "showcase"
+  Project     = "azinfra"
+  Owner       = "devops-team"
+  Purpose     = "portfolio-demonstration"
+}
