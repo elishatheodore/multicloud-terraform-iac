@@ -1,0 +1,31 @@
+# Azure Infrastructure Example Configuration
+# Copy this file to terraform.tfvars and update values as needed
+
+# Resource Group Configuration
+resource_group_name = "azinfra-rg-example"  # Name of the Azure resource group
+location            = "East US"              # Azure region for deployment
+
+# Virtual Network Configuration
+vnet_name          = "azinfra-vnet-example" # Name of the virtual network
+vnet_address_space = ["10.0.0.0/16"]        # Address space for the virtual network
+
+# Subnet Configuration
+subnet_names    = ["azinfra-subnet", "azinfra-db-subnet"]  # Names of the subnets
+subnet_prefixes = ["10.0.1.0/24", "10.0.2.0/24"]         # Address prefixes for subnets
+
+# Virtual Machine Configuration
+vm_count       = 2                # Number of virtual machines to create
+vm_size        = "Standard_B1s"   # Size of the virtual machines
+admin_username = "azureuser"      # Admin username for the virtual machines
+
+# SSH Configuration
+ssh_public_key_path = "~/.ssh/id_rsa.pub"  # Path to SSH public key file
+ssh_source_cidr     = "10.0.0.0/8"         # Source CIDR for SSH access (restrict in production)
+
+# Resource Tags
+tags = {
+  Environment = "example"
+  Project     = "azinfra"
+  Owner       = "devops-team"
+  CostCenter  = "engineering"
+}

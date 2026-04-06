@@ -6,6 +6,14 @@ terraform {
     }
   }
   required_version = ">= 1.3.0"
+  
+  # Uncomment and configure for remote state backend
+  # backend "azurerm" {
+  #   resource_group_name  = "terraform-state-rg"
+  #   storage_account_name = "terraformstatexxxxx"
+  #   container_name       = "tfstate"
+  #   key                  = "azure-infrastructure.tfstate"
+  # }
 }
 
 provider "azurerm" {

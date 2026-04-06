@@ -1,0 +1,32 @@
+# AWS Infrastructure Example Configuration
+# Copy this file to terraform.tfvars and update values as needed
+
+# Region Configuration
+region = "us-east-1"  # AWS region for deployment
+
+# VPC Configuration
+vpc_name = "azinfra-vpc-example"  # Name of the VPC
+vpc_cidr = "10.0.0.0/16"          # CIDR block for the VPC
+
+# Subnet Configuration
+subnet_names = ["azinfra-subnet", "azinfra-db-subnet"]  # Names of the subnets
+subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]         # CIDR blocks for subnets
+
+# EC2 Instance Configuration
+instance_count = 2          # Number of EC2 instances to create
+instance_type  = "t2.micro" # EC2 instance type
+key_name       = "my-key-pair"  # EC2 Key Pair name for SSH access (must exist in AWS)
+
+# AMI Configuration (Ubuntu 22.04 LTS)
+ami_id = "ami-0c02fb55956c7d316"  # AMI ID for EC2 instances (us-east-1 Ubuntu 22.04 LTS)
+
+# SSH Configuration
+ssh_source_cidr = "10.0.0.0/8"  # Source CIDR for SSH access (restrict in production)
+
+# Resource Tags
+tags = {
+  Environment = "example"
+  Project     = "azinfra"
+  Owner       = "devops-team"
+  CostCenter  = "engineering"
+}

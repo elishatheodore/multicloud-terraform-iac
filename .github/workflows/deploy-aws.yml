@@ -46,12 +46,21 @@ jobs:
       run: terraform validate
       working-directory: clouds/aws/examples/complete
 
-    - name: Terraform Plan
-      run: terraform plan -out=tfplan
+    - name: Terraform Plan (Dev)
+      run: terraform plan -var-file=dev.tfvars -out=tfplan-dev
+      working-directory: clouds/aws/examples/complete
+
+    - name: Terraform Plan (Staging)
+      run: terraform plan -var-file=staging.tfvars -out=tfplan-staging
+      working-directory: clouds/aws/examples/complete
+
+    - name: Terraform Plan (Prod)
+      run: terraform plan -var-file=prod.tfvars -out=tfplan-prod
       working-directory: clouds/aws/examples/complete
 
     - name: Terraform Plan Summary
-      run: terraform show -json tfplan | jq -r '.planned_values'
+      run: terraform show -json tfplan-dev | jq -r '.planned_values'
+      working-directory: clouds/aws/examples/complete
 
   terraform-apply:
     runs-on: ubuntu-latest
@@ -73,7 +82,7 @@ jobs:
       working-directory: clouds/aws/examples/complete
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -var-file=${{ github.event.inputs.environment || 'dev' }}.tfvars -auto-approve
       working-directory: clouds/aws/examples/complete
 
     - name: Terraform Output

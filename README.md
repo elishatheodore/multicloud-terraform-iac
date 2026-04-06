@@ -1,14 +1,22 @@
 ﻿# Multi-Cloud Infrastructure as Code
 
-A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azure, AWS, and GCP** with modular design and CI/CD automation.
+[![Deploy Azure](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-azure.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml)
+[![Deploy AWS](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-aws.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml)
+[![Deploy GCP](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-gcp.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml)
+[![Security Scan](https://github.com/elishatheodore/azure-infrastructure/workflows/security-scan.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml)
 
-## 🌐 Overview
+A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azure, AWS, and GCP** with modular design and enterprise-grade CI/CD automation.
 
-This project transforms a single Azure infrastructure into a multi-cloud solution with:
-- **Modular Architecture** - Reusable components for networking, compute, storage, and security
-- **Cloud Abstraction** - Consistent interfaces across Azure, AWS, and GCP
-- **CI/CD Automation** - Ready-to-deploy GitHub Actions workflows
-- **Parameterization** - All values configurable with sensible defaults
+## 🌐 What This Project Demonstrates
+
+- **Multi-Cloud Terraform Modules** - Consistent infrastructure patterns across Azure, AWS, and GCP
+- **DRY Module Design** - Reusable networking and compute components
+- **Environment-Based Deployments** - dev, staging, and prod with tfvars separation
+- **CI/CD Automation** - GitHub Actions workflows with environment selection
+- **Security Scanning** - Automated tfsec and checkov security analysis
+- **Cost Estimation** - Infracost integration for cloud cost visibility
+- **Drift Detection** - Scheduled infrastructure monitoring and alerts
+- **Code Quality** - Pre-commit hooks with terraform-docs, fmt, and validate
 
 ## 🏗️ Architecture
 
@@ -28,33 +36,46 @@ Multi-Cloud Infrastructure
     └── Compute Engine → VMs
 ```
 
-## � Project Structure
+## 📁 Project Structure
 
 ```
 azure-infrastructure/
-├── clouds/                          # Multi-cloud implementations
+├── .github/workflows/               # CI/CD pipelines
+│   ├── deploy-azure.yml            # Azure deployment automation
+│   ├── deploy-aws.yml              # AWS deployment automation
+│   ├── deploy-gcp.yml              # GCP deployment automation
+│   ├── security-scan.yml           # Security scanning workflow
+│   └── drift-detection.yml         # Infrastructure drift monitoring
+├── .pre-commit-config.yaml          # Pre-commit hooks configuration
+├── .terraform-docs.yml              # Documentation generation config
+├── CHANGELOG.md                     # Version history and release notes
+├── shared/                         # Common abstractions
+│   ├── variables.tf                 # Shared variable definitions
+│   ├── locals.tf                   # Naming conventions
+│   └── tags.tf                     # Tag/label management
+├── scripts/                        # Utility scripts
+│   ├── bootstrap-state-azure.sh    # Azure remote state setup
+│   ├── bootstrap-state-aws.sh      # AWS remote state setup
+│   ├── bootstrap-state-gcp.sh      # GCP remote state setup
+│   ├── deploy.sh                   # Original deployment script
+│   └── destroy.sh                  # Original destruction script
+├── clouds/                         # Multi-cloud implementations
 │   ├── azure/                       # Azure modules
 │   │   ├── networking/              # VNet, subnets, NSG
-│   │   ├── compute/                 # VMs, NICs
+│   │   ├── compute/                 # VMs, network interfaces
 │   │   └── examples/complete/       # Full deployment example
 │   ├── aws/                         # AWS modules
-│   │   ├── networking/              # VPC, subnets, SG
+│   │   ├── networking/              # VPC, subnets, security groups
 │   │   ├── compute/                 # EC2 instances
 │   │   └── examples/complete/       # Full deployment example
 │   └── gcp/                         # GCP modules
-│       ├── networking/              # VPC, subnets, firewall
-│       ├── compute/                 # Compute Engine
+│       ├── networking/              # VPC network, subnetworks, firewall
+│       ├── compute/                 # Compute Engine instances
 │       └── examples/complete/       # Full deployment example
-├── .github/workflows/               # CI/CD pipelines
-│   ├── deploy-azure.yml            # Azure deployment
-│   ├── deploy-aws.yml              # AWS deployment
-│   └── deploy-gcp.yml              # GCP deployment
-├── scripts/                         # Utility scripts
-├── azure_project_showcase/          # Original Azure project (preserved)
-└── README.md
+└── azure_project_showcase/          # Original Azure project (preserved)
 ```
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -73,31 +94,31 @@ azure-infrastructure/
 - Service account with appropriate permissions
 - Terraform >= 1.3.0
 
-### Deploy to Azure
+### Quick Deploy to Azure
 
 ```bash
 cd clouds/azure/examples/complete
 terraform init
-terraform plan
-terraform apply
+terraform plan -var-file=dev.tfvars
+terraform apply -var-file=dev.tfvars
 ```
 
-### Deploy to AWS
+### Quick Deploy to AWS
 
 ```bash
 cd clouds/aws/examples/complete
 terraform init
-terraform plan
-terraform apply
+terraform plan -var-file=dev.tfvars
+terraform apply -var-file=dev.tfvars
 ```
 
-### Deploy to GCP
+### Quick Deploy to GCP
 
 ```bash
 cd clouds/gcp/examples/complete
 terraform init
-terraform plan
-terraform apply
+terraform plan -var-file=dev.tfvars
+terraform apply -var-file=dev.tfvars
 ```
 
 ## 🔧 Configuration
@@ -115,11 +136,9 @@ Each cloud provider uses the same modular structure with cloud-specific variable
 - **AWS**: VPC CIDR, instance types, AMI IDs
 - **GCP**: Project ID, regions, machine types
 
-## � CI/CD Automation
+## 🔄 CI/CD Automation
 
 ### GitHub Actions Workflows
-
-Each cloud provider has an automated workflow:
 
 **Triggers:**
 - Push to main branch (auto-deploy)
@@ -162,20 +181,61 @@ Provisions compute resources:
 - **AWS**: EC2 instances with Key Pairs
 - **GCP**: Compute Engine instances with Service Accounts
 
-## �️ Security Features
+## 🛡️ Security Features
 
 - **Least Privilege**: Minimal required permissions
 - **Network Security**: Configurable SSH access via CIDR
 - **Secure Defaults**: No public access unless explicitly configured
 - **Encryption**: Managed by cloud providers
 
-## 📊 Outputs
+## 📊 Cost
 
-Each deployment provides consistent outputs:
-- Network IDs and configurations
-- Instance details and IP addresses
-- Security group/firewall rule IDs
-- Resource names and tags
+**⚠️ Disclaimer**: Deploying this infrastructure creates real cloud resources and will incur costs.
+
+### Estimated Monthly Costs (Development Environment)
+
+| Cloud | Resources | Estimated Cost |
+|--------|------------|----------------|
+| **Azure** | 1x Standard_B1s VM, VNet, Subnets | ~$15-25/month |
+| **AWS** | 1x t2.micro EC2, VPC, Subnets | ~$10-20/month |
+| **GCP** | 1x e2-micro VM, VPC, Subnets | ~$8-15/month |
+
+*Costs vary by region and usage. Monitor costs via cloud provider dashboards.*
+
+## 🔍 Running Locally
+
+### Validation Tests
+
+Run the validation suite to test all modules:
+
+```bash
+# Clone the repository
+git clone https://github.com/elishatheodore/azure-infrastructure
+cd azure-infrastructure
+
+# Run validation tests
+./tests/validate.sh
+```
+
+This will:
+- Initialize Terraform in all module directories
+- Validate syntax and configuration
+- Report pass/fail status for each module
+
+### Pre-commit Hooks
+
+Install pre-commit hooks for local development:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install hooks
+pre-commit install
+
+# Run manually
+pre-commit run --all-files
+```
 
 ## 🎯 Use Cases
 
@@ -204,14 +264,7 @@ Each deployment provides consistent outputs:
 | Compute | VM | EC2 | Compute Engine |
 | Storage | Disk | EBS | Persistent Disk |
 | CLI | az | aws | gcloud |
-
-## 🚀 Next Steps
-
-1. **Customize** modules for your specific requirements
-2. **Extend** with additional services (databases, load balancers)
-3. **Integrate** with existing CI/CD pipelines
-4. **Monitor** with cloud-native monitoring solutions
-5. **Scale** with auto-scaling and load balancing
+| State Backend | Azure Storage | S3 + DynamoDB | GCS |
 
 ## 📚 Documentation
 
@@ -219,18 +272,35 @@ Each deployment provides consistent outputs:
 - [AWS Module Documentation](clouds/aws/README.md)
 - [GCP Module Documentation](clouds/gcp/README.md)
 - [CI/CD Setup Guide](.github/workflows/README.md)
+- [Security Scanning Guide](.github/workflows/security-scan.yml)
 
 ## 🤝 Contributing
 
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+### Development Workflow
+
 1. Fork the repository
 2. Create a feature branch
-3. Add your improvements
-4. Submit a pull request
+3. Make your changes
+4. Run tests and validation
+5. Submit a pull request
+
+### Code Quality Standards
+
+- All `.tf` files must have descriptions on variables and outputs
+- Run `terraform fmt` before committing
+- Pass `terraform validate` for all modules
+- Follow naming conventions in `shared/locals.tf`
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🏆 Acknowledgments
+
+This project demonstrates enterprise-grade Infrastructure as Code patterns and DevOps best practices for cloud engineering portfolios.
 
 ---
 
-**Transform your single-cloud infrastructure into a comprehensive multi-cloud solution!** 🌍
+**🚀 Transform your single-cloud infrastructure into a comprehensive multi-cloud solution!**

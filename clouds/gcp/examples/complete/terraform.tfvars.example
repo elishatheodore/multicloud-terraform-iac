@@ -1,0 +1,32 @@
+# GCP Infrastructure Example Configuration
+# Copy this file to terraform.tfvars and update values as needed
+
+# Project Configuration
+project_id = "my-gcp-project"  # GCP project ID (must exist)
+
+# Region and Zone Configuration
+region = "us-central1"      # GCP region for deployment
+zone   = "us-central1-a"    # GCP zone for deployment
+
+# VPC Network Configuration
+network_name = "azinfra-network-example"  # Name of the VPC network
+network_cidr = "10.0.0.0/16"             # CIDR range for the VPC network
+
+# Subnet Configuration
+subnet_names = ["azinfra-subnet", "azinfra-db-subnet"]  # Names of the subnets
+subnet_cidrs = ["10.0.1.0/24", "10.0.2.0/24"]         # CIDR ranges for subnets
+
+# Compute Engine Configuration
+instance_count = 2          # Number of compute instances to create
+machine_type   = "e2-micro" # Machine type for compute instances
+
+# SSH Configuration
+ssh_source_cidr = "10.0.0.0/8"  # Source CIDR for SSH access (restrict in production)
+
+# Resource Labels
+labels = {
+  environment = "example"
+  project     = "azinfra"
+  owner       = "devops-team"
+  cost_center = "engineering"
+}

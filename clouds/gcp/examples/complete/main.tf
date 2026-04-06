@@ -6,6 +6,12 @@ terraform {
     }
   }
   required_version = ">= 1.3.0"
+  
+  # Uncomment and configure for remote state backend
+  # backend "gcs" {
+  #   bucket = "terraform-state-xxxxxx"
+  #   prefix = "azure-infrastructure/gcp"
+  # }
 }
 
 provider "google" {
