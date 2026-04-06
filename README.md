@@ -1,10 +1,10 @@
 ﻿# Multi-Cloud Infrastructure as Code
 
-[![Deploy Azure](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml)
-[![Deploy AWS](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml)
-[![Deploy GCP](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml)
-[![Security Scan](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml)
-[![Validate Terraform](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/validate.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/validate.yml)
+[![Deploy Azure](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/deploy-azure.yml/badge.svg)](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/deploy-azure.yml)
+[![Deploy AWS](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/deploy-aws.yml/badge.svg)](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/deploy-aws.yml)
+[![Deploy GCP](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/deploy-gcp.yml)
+[![Security Scan](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/security-scan.yml/badge.svg)](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/security-scan.yml)
+[![Validate Terraform](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/validate.yml/badge.svg)](https://github.com/elishatheodore/multicloud-terraform-iac/actions/workflows/validate.yml)
 
 A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azure, AWS, and GCP** with modular design and enterprise-grade CI/CD automation.
 
@@ -31,7 +31,7 @@ GCP:      VPC Network > Subnetworks > Firewall Rules > Compute Engine VMs
 ## 📁 Project Structure
 
 ```
-azure-infrastructure/
+multicloud-terraform-iac/
 ├── .github/workflows/               # CI/CD pipelines
 │   ├── deploy-azure.yml            # Azure deployment automation
 │   ├── deploy-aws.yml              # AWS deployment automation
@@ -238,8 +238,8 @@ Run the validation suite to test all modules:
 
 ```bash
 # Clone the repository
-git clone https://github.com/elishatheodore/azure-infrastructure
-cd azure-infrastructure
+git clone https://github.com/elishatheodore/multicloud-terraform-iac
+cd multicloud-terraform-iac
 
 # Run validation tests
 ./tests/validate.sh
