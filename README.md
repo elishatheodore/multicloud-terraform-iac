@@ -1,10 +1,10 @@
 ﻿# Multi-Cloud Infrastructure as Code
 
-[![Deploy Azure](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-azure.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml)
-[![Deploy AWS](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-aws.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml)
-[![Deploy GCP](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-gcp.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml)
-[![Deploy Showcase](https://github.com/elishatheodore/azure-infrastructure/workflows/deploy-showcase.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-showcase.yml)
-[![Security Scan](https://github.com/elishatheodore/azure-infrastructure/workflows/security-scan.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml)
+[![Deploy Azure](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-azure.yml)
+[![Deploy AWS](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-aws.yml)
+[![Deploy GCP](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/deploy-gcp.yml)
+[![Security Scan](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/security-scan.yml)
+[![Validate Terraform](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/validate.yml/badge.svg)](https://github.com/elishatheodore/azure-infrastructure/actions/workflows/validate.yml)
 
 A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azure, AWS, and GCP** with modular design and enterprise-grade CI/CD automation.
 
@@ -23,19 +23,9 @@ A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azur
 ## 🏗️ Architecture
 
 ```
-Multi-Cloud Infrastructure
-├── Azure (azinfra)
-│   ├── Resource Group → VPC → Subnets
-│   ├── Network Security Group → Security Groups
-│   └── Linux VMs → EC2 Instances → Compute Engine
-├── AWS (azinfra)
-│   ├── VPC → VPC Network
-│   ├── Subnets → Subnetworks
-│   └── EC2 → Compute Engine
-└── GCP (azinfra)
-    ├── VPC Network → VNet
-    ├── Subnetworks → Subnets
-    └── Compute Engine → VMs
+Azure:    Resource Group > VNet > Subnets > NSG > Linux VMs
+AWS:      VPC > Subnets > Security Groups > EC2 Instances
+GCP:      VPC Network > Subnetworks > Firewall Rules > Compute Engine VMs
 ```
 
 ## 📁 Project Structure
@@ -149,17 +139,16 @@ Each cloud provider uses the same modular structure with cloud-specific variable
 
 ## 🔄 CI/CD Automation
 
+> **Note on workflow triggers:** All workflows are configured for manual execution (`workflow_dispatch`) only. This is intentional — cloud credentials are environment-specific and deployment to live infrastructure should be a deliberate action, not an automatic response to a code push. In a production setup, the deploy and drift detection workflows would be triggered on push to main and on a schedule respectively.
+
 ### GitHub Actions Workflows
 
-**Automated Workflows:**
-- Push to main branch (auto-deploy multi-cloud modules)
-- Pull requests (plan only for multi-cloud modules)
-- Scheduled drift detection (daily)
-
 **Manual Workflows:**
+- Multi-cloud deployments (Azure, AWS, GCP)
 - Showcase deployment (plan/apply/destroy)
 - Security scanning (tfsec + checkov)
 - Terraform validation (module testing)
+- Drift detection (infrastructure monitoring)
 
 **Environments:**
 - `dev` - Development/testing
@@ -312,6 +301,32 @@ terraform validate
 - [CI/CD Setup Guide](.github/workflows/README.md)
 - [Security Scanning Guide](.github/workflows/security-scan.yml)
 
+## 🏷️ Repository Setup
+
+**⚠️ Important: Complete these steps in GitHub Repository Settings**
+
+### Repository Description
+Go to **Settings → General** and set:
+- **Description**: `Cloud-agnostic multi-cloud IaC with Terraform — Azure, AWS, GCP — with CI/CD, security scanning, drift detection, and cost estimation`
+
+### Repository Topics
+Go to **Settings → General** and add these topics:
+- `terraform`
+- `infrastructure-as-code`
+- `multi-cloud`
+- `azure`
+- `aws`
+- `gcp`
+- `devops`
+- `github-actions`
+- `cloud-agnostic`
+
+### Why This Matters
+- **Discoverability**: Proper topics help others find your repository
+- **Professional Appearance**: Clear description shows project purpose
+- **SEO Optimization**: Topics improve search ranking
+- **Portfolio Value**: Demonstrates attention to detail
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
@@ -323,6 +338,24 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 3. Make your changes
 4. Run tests and validation
 5. Submit a pull request
+
+### Commit Message Standards
+
+**Use conventional commit format:**
+- `feat:` - New features or functionality
+- `fix:` - Bug fixes or patches
+- `ci:` - CI/CD configuration changes
+- `docs:` - Documentation updates
+- `chore:` - Maintenance tasks
+
+**Fix existing commit messages:**
+If you have generic commit messages, use the provided script:
+```bash
+# Fix last 5 commits (only if not pushed yet)
+./scripts/fix-commits.sh 5
+```
+
+⚠️ **Important:** Only rewrite commit history if commits haven't been pushed to the remote repository.
 
 ### Code Quality Standards
 

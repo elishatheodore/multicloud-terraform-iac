@@ -1,16 +1,12 @@
-name: Deploy GCP Infrastructure
+name: Deploy GCP
 
+# Manual trigger only — cloud credentials are environment-specific.
+# Deployment to live infrastructure should be deliberate, not automatic.
 on:
-  push:
-    branches: [ main ]
-    paths: [ 'clouds/gcp/**' ]
-  pull_request:
-    branches: [ main ]
-    paths: [ 'clouds/gcp/**' ]
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy'
+        description: 'Environment to deploy (dev/staging/prod)'
         required: true
         default: 'dev'
         type: choice
@@ -18,15 +14,23 @@ on:
         - dev
         - staging
         - prod
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+        - plan
+        - apply
 
 env:
   GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
   GCLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
 jobs:
-  terraform-plan:
+  deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    environment: ${{ github.event.inputs.environment }}
     
     steps:
     - name: Checkout
@@ -37,51 +41,23 @@ jobs:
       with:
         terraform_version: ">=1.3.0"
 
-    - name: Terraform Init
-      run: terraform init
-      working-directory: clouds/gcp/examples/complete
-
-    - name: Terraform Validate
-      run: terraform validate
-      working-directory: clouds/gcp/examples/complete
-
-    - name: Terraform Plan (Dev)
-      run: terraform plan -var-file=dev.tfvars -out=tfplan-dev
-      working-directory: clouds/gcp/examples/complete
-
-    - name: Terraform Plan (Staging)
-      run: terraform plan -var-file=staging.tfvars -out=tfplan-staging
-      working-directory: clouds/gcp/examples/complete
-
-    - name: Terraform Plan (Prod)
-      run: terraform plan -var-file=prod.tfvars -out=tfplan-prod
-      working-directory: clouds/gcp/examples/complete
-
-    - name: Terraform Plan Summary
-      run: terraform show -json tfplan-dev | jq -r '.planned_values'
-      working-directory: clouds/gcp/examples/complete
-
-  terraform-apply:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
-    needs: terraform-plan
-    environment: ${{ github.event.inputs.environment || 'dev' }}
-    
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
       with:
-        terraform_version: ">=1.3.0"
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
 
     - name: Terraform Init
       run: terraform init
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Plan
+      if: github.event.inputs.action == 'plan'
+      run: terraform plan -var-file=${{ github.event.inputs.environment }}.tfvars
       working-directory: clouds/gcp/examples/complete
 
     - name: Terraform Apply
-      run: terraform apply -var-file=${{ github.event.inputs.environment || 'dev' }}.tfvars -auto-approve
+      if: github.event.inputs.action == 'apply'
+      run: terraform apply -auto-approve -var-file=${{ github.event.inputs.environment }}.tfvars
       working-directory: clouds/gcp/examples/complete
 
     - name: Terraform Output

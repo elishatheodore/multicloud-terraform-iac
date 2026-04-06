@@ -1,5 +1,7 @@
 name: Validate Terraform
 
+# Manual trigger only — cloud credentials are environment-specific.
+# Deployment to live infrastructure should be deliberate, not automatic.
 on:
   workflow_dispatch:
     inputs:

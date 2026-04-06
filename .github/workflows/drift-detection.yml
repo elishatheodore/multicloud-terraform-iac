@@ -1,9 +1,8 @@
 name: Drift Detection
 
+# Manual trigger only — in production this runs on a schedule (cron).
+# Secrets are not configured in this portfolio environment.
 on:
-  schedule:
-    # Run every weekday at 06:00 UTC
-    - cron: "0 6 * * 1-5"
   workflow_dispatch:
     inputs:
       environment:
