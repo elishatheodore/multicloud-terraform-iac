@@ -5,6 +5,11 @@ name: Security Scan
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
 jobs:
   security-scan:
     runs-on: ubuntu-latest
@@ -36,7 +41,7 @@ jobs:
         output_file_path: reports/results.sarif
 
     - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: reports/results.sarif
