@@ -1,0 +1,69 @@
+# GCP Complete Example Variables
+
+variable "project_id" {
+  type        = string
+  description = "GCP project ID"
+}
+
+variable "region" {
+  type        = string
+  description = "GCP region for deployment"
+  default     = "us-central1"
+}
+
+variable "zone" {
+  type        = string
+  description = "GCP zone for deployment"
+  default     = "us-central1-a"
+}
+
+variable "network_name" {
+  type        = string
+  description = "Name of the VPC network"
+  default     = "azinfra-network"
+}
+
+variable "network_cidr" {
+  type        = string
+  description = "CIDR range for the VPC network"
+  default     = "10.0.0.0/16"
+}
+
+variable "subnet_names" {
+  type        = list(string)
+  description = "Names of the subnets to create"
+  default     = ["azinfra-subnet", "azinfra-db-subnet"]
+}
+
+variable "subnet_cidrs" {
+  type        = list(string)
+  description = "CIDR ranges for subnets"
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
+}
+
+variable "instance_count" {
+  type        = number
+  description = "Number of compute instances to create"
+  default     = 2
+}
+
+variable "machine_type" {
+  type        = string
+  description = "Machine type for compute instances"
+  default     = "e2-micro"
+}
+
+variable "ssh_source_cidr" {
+  type        = string
+  description = "Source CIDR for SSH access"
+  default     = "10.0.0.0/8"
+}
+
+variable "labels" {
+  type        = map(string)
+  description = "Labels to apply to all resources"
+  default     = {
+    environment = "dev"
+    project     = "azinfra"
+  }
+}

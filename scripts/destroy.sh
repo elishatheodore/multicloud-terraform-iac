@@ -9,6 +9,6 @@ if [ "$CONFIRM" != "yes" ]; then
     exit 1
 fi
 
-terraform -chdir=../terraform init
-terraform -chdir=../terraform destroy -auto-approve
+terraform -chdir=../azure_project_showcase init
+terraform -chdir=../azure_project_showcase destroy -auto-approve
 echo "✅ All resources destroyed."

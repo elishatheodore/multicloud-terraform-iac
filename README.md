@@ -1,119 +1,236 @@
-﻿azinfra – Azure Infrastructure Automation 🚀
+﻿# Multi-Cloud Infrastructure as Code
+
+A comprehensive, cloud-agnostic Infrastructure as Code project supporting **Azure, AWS, and GCP** with modular design and CI/CD automation.
 
 ## 🌐 Overview
 
-`azinfra` provisions a scalable, production-ready Azure environment using Terraform:
+This project transforms a single Azure infrastructure into a multi-cloud solution with:
+- **Modular Architecture** - Reusable components for networking, compute, storage, and security
+- **Cloud Abstraction** - Consistent interfaces across Azure, AWS, and GCP
+- **CI/CD Automation** - Ready-to-deploy GitHub Actions workflows
+- **Parameterization** - All values configurable with sensible defaults
 
-- Resource Group
-- Virtual Network (VNet)
-- Subnets (VM + DB)
-- Network Interfaces (NICs)
-- Linux VMs with SSH key auth
-- Network Security Group (SSH hardened)
+## 🏗️ Architecture
 
-## 📐 Architecture
+```
+Multi-Cloud Infrastructure
+├── Azure (azinfra)
+│   ├── Resource Group → VPC → Subnets
+│   ├── Network Security Group → Security Groups
+│   └── Linux VMs → EC2 Instances → Compute Engine
+├── AWS (azinfra)
+│   ├── VPC → VPC Network
+│   ├── Subnets → Subnetworks
+│   └── EC2 → Compute Engine
+└── GCP (azinfra)
+    ├── VPC Network → VNet
+    ├── Subnetworks → Subnets
+    └── Compute Engine → VMs
+```
 
-┌───────────────────────────────────────────────┐
-│                 VNet (10.0.0.0/16)           │
-│  ┌───────────────┐   ┌───────────────┐       │
-│  │ VM Subnet     │   │ DB Subnet     │       │
-│  │ azinfra-subnet│   │ azinfra-db-   │       │
-│  │ 10.0.1.0/24   │   │ subnet        │       │
-│  │  - NICs       │   │ 10.0.2.0/24   │       │
-│  │  - VMs        │   │  - Reserved   │       │
-│  └───────────────┘   └───────────────┘       │
-└───────────────────────────────────────────────┘
-- `VM Subnet` hosts compute VMs
-- `DB Subnet` reserved for database/internal nodes
-- `NSG` secures VM subnet (SSH ingress only by default)
+## � Project Structure
 
-## 📁 Folder Structure
+```
+azure-infrastructure/
+├── clouds/                          # Multi-cloud implementations
+│   ├── azure/                       # Azure modules
+│   │   ├── networking/              # VNet, subnets, NSG
+│   │   ├── compute/                 # VMs, NICs
+│   │   └── examples/complete/       # Full deployment example
+│   ├── aws/                         # AWS modules
+│   │   ├── networking/              # VPC, subnets, SG
+│   │   ├── compute/                 # EC2 instances
+│   │   └── examples/complete/       # Full deployment example
+│   └── gcp/                         # GCP modules
+│       ├── networking/              # VPC, subnets, firewall
+│       ├── compute/                 # Compute Engine
+│       └── examples/complete/       # Full deployment example
+├── .github/workflows/               # CI/CD pipelines
+│   ├── deploy-azure.yml            # Azure deployment
+│   ├── deploy-aws.yml              # AWS deployment
+│   └── deploy-gcp.yml              # GCP deployment
+├── scripts/                         # Utility scripts
+├── azure_project_showcase/          # Original Azure project (preserved)
+└── README.md
+```
 
-- `terraform/`
-  - `main.tf`
-  - `provider.tf`
-  - `variables.tf`
-  - `output.tf`
-- `scripts/`
-  - `deploy.sh`
-  - `destroy.sh`
-- `docs/` (diagram)
-- `README.md`
+## 🚀 Quick Start
 
-## ⚡ Prerequisites
+### Prerequisites
 
-- Azure CLI logged in (`az login`)
-- Terraform v1.3+
-- SSH key pair at `~/.ssh/id_rsa.pub` or custom path
+**Azure:**
+- Azure CLI installed and configured (`az login`)
+- Terraform >= 1.3.0
+- SSH key pair
 
-## 🚀 Deploy
+**AWS:**
+- AWS CLI installed and configured
+- EC2 Key Pair created
+- Terraform >= 1.3.0
+
+**GCP:**
+- gcloud CLI installed and configured
+- Service account with appropriate permissions
+- Terraform >= 1.3.0
+
+### Deploy to Azure
 
 ```bash
-cd terraform
+cd clouds/azure/examples/complete
 terraform init
-terraform plan -out=tfplan
-terraform apply tfplan
+terraform plan
+terraform apply
 ```
 
-Or via scripts:
+### Deploy to AWS
 
 ```bash
-cd scripts
-./deploy.sh apply
+cd clouds/aws/examples/complete
+terraform init
+terraform plan
+terraform apply
 ```
 
-## 🧹 Destroy
+### Deploy to GCP
 
 ```bash
-cd terraform
-terraform destroy
+cd clouds/gcp/examples/complete
+terraform init
+terraform plan
+terraform apply
 ```
 
-Or via script:
+## 🔧 Configuration
 
-```bash
-cd scripts
-./destroy.sh
-```
+Each cloud provider uses the same modular structure with cloud-specific variables:
 
-## 🔧 Customization
+### Common Variables
+- Network CIDR blocks and subnets
+- Instance count and types
+- SSH access configuration
+- Tags and labels
 
-Use `terraform.tfvars` or CLI vars:
+### Cloud-Specific Variables
+- **Azure**: Resource groups, location, VM sizes
+- **AWS**: VPC CIDR, instance types, AMI IDs
+- **GCP**: Project ID, regions, machine types
 
-```hcl
-resource_group_name = "azinfra-rg"
-location            = "East US"
-vm_count            = 2
-ssh_source_cidr     = "203.0.113.0/24" # limit in prod
-```
+## � CI/CD Automation
 
-## 🔑 SSH Access
+### GitHub Actions Workflows
 
-- Default key: `~/.ssh/id_rsa.pub`
-- Custom key:
+Each cloud provider has an automated workflow:
 
-```bash
-terraform apply -var="ssh_public_key_path=/path/to/public_key.pub"
-```
+**Triggers:**
+- Push to main branch (auto-deploy)
+- Pull requests (plan only)
+- Manual dispatch (choose environment)
 
-- Connect to VM:
+**Environments:**
+- `dev` - Development/testing
+- `staging` - Pre-production
+- `prod` - Production
 
-```bash
-ssh azureuser@<vm-private-ip>
-```
+**Required Secrets:**
 
-## 📤 Outputs
+**Azure:**
+- `AZURE_CLIENT_ID`
+- `AZURE_CLIENT_SECRET`
+- `AZURE_SUBSCRIPTION_ID`
+- `AZURE_TENANT_ID`
 
-- `resource_group_name`
-- `vm_private_ips`
-- `subnet_names`
-- `subnet_ids`
-- `vm_ids`
-- `vm_nsg_id`
+**AWS:**
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_DEFAULT_REGION`
 
-## 🎯 Improvements included
+**GCP:**
+- `GCP_SA_KEY` (Service Account JSON)
+- `GCP_PROJECT_ID`
 
-- provider constraints in `provider.tf` + required_version
-- NSG & association in `main.tf`
-- secure SSH ingress control via `ssh_source_cidr`
-- helpful README and usage guidance
+## 📦 Modules
+
+### Networking Module
+Creates network infrastructure:
+- **Azure**: VNet, Subnets, NSG, Route Tables
+- **AWS**: VPC, Subnets, Internet Gateway, Security Groups
+- **GCP**: VPC Network, Subnetworks, Firewall Rules
+
+### Compute Module
+Provisions compute resources:
+- **Azure**: Linux VMs with SSH, Network Interfaces
+- **AWS**: EC2 instances with Key Pairs
+- **GCP**: Compute Engine instances with Service Accounts
+
+## �️ Security Features
+
+- **Least Privilege**: Minimal required permissions
+- **Network Security**: Configurable SSH access via CIDR
+- **Secure Defaults**: No public access unless explicitly configured
+- **Encryption**: Managed by cloud providers
+
+## 📊 Outputs
+
+Each deployment provides consistent outputs:
+- Network IDs and configurations
+- Instance details and IP addresses
+- Security group/firewall rule IDs
+- Resource names and tags
+
+## 🎯 Use Cases
+
+**Multi-Cloud Strategy:**
+- Deploy the same infrastructure across clouds
+- Compare cloud-specific implementations
+- Disaster recovery and redundancy
+
+**Learning & Development:**
+- Understand cloud differences and similarities
+- Practice Infrastructure as Code
+- Test multi-cloud scenarios
+
+**Production Workloads:**
+- Standardized infrastructure patterns
+- Automated deployments
+- Environment consistency
+
+## 🔍 Cloud Comparison
+
+| Feature | Azure | AWS | GCP |
+|---------|-------|-----|-----|
+| Network | VNet | VPC | VPC Network |
+| Subnet | Subnet | Subnet | Subnetwork |
+| Security | NSG | Security Group | Firewall |
+| Compute | VM | EC2 | Compute Engine |
+| Storage | Disk | EBS | Persistent Disk |
+| CLI | az | aws | gcloud |
+
+## 🚀 Next Steps
+
+1. **Customize** modules for your specific requirements
+2. **Extend** with additional services (databases, load balancers)
+3. **Integrate** with existing CI/CD pipelines
+4. **Monitor** with cloud-native monitoring solutions
+5. **Scale** with auto-scaling and load balancing
+
+## 📚 Documentation
+
+- [Azure Module Documentation](clouds/azure/README.md)
+- [AWS Module Documentation](clouds/aws/README.md)
+- [GCP Module Documentation](clouds/gcp/README.md)
+- [CI/CD Setup Guide](.github/workflows/README.md)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Add your improvements
+4. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+**Transform your single-cloud infrastructure into a comprehensive multi-cloud solution!** 🌍

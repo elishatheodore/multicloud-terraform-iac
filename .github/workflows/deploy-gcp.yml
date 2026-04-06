@@ -1,0 +1,102 @@
+name: Deploy GCP Infrastructure
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'clouds/gcp/**' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ 'clouds/gcp/**' ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+        - dev
+        - staging
+        - prod
+
+env:
+  GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+  GCLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ">=1.3.0"
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Validate
+      run: terraform validate
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Plan
+      run: terraform plan -out=tfplan
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Plan Summary
+      run: terraform show -json tfplan | jq -r '.planned_values'
+
+  terraform-apply:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    needs: terraform-plan
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ">=1.3.0"
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Output
+      run: terraform output -json
+      working-directory: clouds/gcp/examples/complete
+
+  terraform-destroy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ">=1.3.0"
+
+    - name: Terraform Init
+      run: terraform init
+      working-directory: clouds/gcp/examples/complete
+
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      working-directory: clouds/gcp/examples/complete

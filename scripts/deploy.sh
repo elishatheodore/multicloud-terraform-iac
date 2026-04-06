@@ -8,10 +8,10 @@ if [ "$ACTION" != "apply" ]; then
 fi
 
 echo "⚡ Deploying azinfra infrastructure..."
-terraform -chdir=../terraform init
-terraform -chdir=../terraform validate
-terraform -chdir=../terraform plan -out=tfplan
-terraform -chdir=../terraform apply tfplan
+terraform -chdir=../azure_project_showcase init
+terraform -chdir=../azure_project_showcase validate
+terraform -chdir=../azure_project_showcase plan -out=tfplan
+terraform -chdir=../azure_project_showcase apply tfplan
 
 echo "✅ Deployment complete. VM IPs:"
-terraform -chdir=../terraform output vm_private_ips
+terraform -chdir=../azure_project_showcase output vm_private_ips

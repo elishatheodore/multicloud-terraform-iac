@@ -55,6 +55,6 @@ variable "ssh_public_key_path" {
 
 variable "ssh_source_cidr" {
   type        = string
-  default     = "0.0.0.0/0"
+  default     = "10.0.0.0/8"
   description = "Source CIDR for SSH access; use a limited range in production."
 }
