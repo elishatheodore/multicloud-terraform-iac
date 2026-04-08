@@ -1,5 +1,11 @@
 # GCP Compute Variables
 
+variable "name_prefix" {
+  type        = string
+  description = "Prefix for resource names"
+  default     = "gcp"
+}
+
 variable "project_id" {
   type        = string
   description = "GCP project ID"

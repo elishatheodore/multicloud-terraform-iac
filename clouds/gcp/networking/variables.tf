@@ -1,5 +1,11 @@
 # GCP Networking Variables
 
+variable "name_prefix" {
+  type        = string
+  description = "Prefix for resource names"
+  default     = "gcp"
+}
+
 variable "project_id" {
   type        = string
   description = "GCP project ID"
@@ -14,7 +20,7 @@ variable "region" {
 variable "network_name" {
   type        = string
   description = "Name of the VPC network"
-  default     = "azinfra-network"
+  default     = "gcp-network"
 }
 
 variable "network_cidr" {
@@ -26,7 +32,7 @@ variable "network_cidr" {
 variable "subnet_names" {
   type        = list(string)
   description = "Names of the subnets to create"
-  default     = ["azinfra-subnet", "azinfra-db-subnet"]
+  default     = ["gcp-subnet", "gcp-db-subnet"]
 }
 
 variable "subnet_cidrs" {

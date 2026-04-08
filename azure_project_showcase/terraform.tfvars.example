@@ -2,15 +2,15 @@
 # Copy this file to terraform.tfvars and update values
 
 # Resource Group Configuration
-resource_group_name = "azinfra-showcase-rg"
+resource_group_name = "azure-showcase-rg"
 location            = "East US"
 
 # Virtual Network Configuration
-vnet_name          = "azinfra-showcase-vnet"
+vnet_name          = "azure-showcase-vnet"
 vnet_address_space = ["10.0.0.0/16"]
 
 # Subnet Configuration
-subnet_names    = ["azinfra-showcase-subnet", "azinfra-showcase-db-subnet"]
+subnet_names    = ["azure-showcase-subnet", "azure-showcase-db-subnet"]
 subnet_prefixes = ["10.0.1.0/24", "10.0.2.0/24"]
 
 # Virtual Machine Configuration
@@ -25,7 +25,7 @@ ssh_source_cidr     = "10.0.0.0/8"
 # Resource Tags
 tags = {
   Environment = "showcase"
-  Project     = "azinfra"
+  Project     = "cloudinfra"
   Owner       = "devops-team"
   Purpose     = "portfolio-demonstration"
 }

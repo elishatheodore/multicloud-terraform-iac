@@ -1,10 +1,10 @@
 # Development Environment Configuration
-resource_group_name = "azinfra-rg-dev"
+resource_group_name = "azure-rg-dev"
 location            = "East US"
-vnet_name           = "azinfra-vnet-dev"
+vnet_name           = "azure-vnet-dev"
 vnet_address_space  = ["10.0.0.0/16"]
 
-subnet_names    = ["azinfra-subnet-dev", "azinfra-db-subnet-dev"]
+subnet_names    = ["azure-subnet-dev", "azure-db-subnet-dev"]
 subnet_prefixes = ["10.0.1.0/24", "10.0.2.0/24"]
 
 vm_count       = 1
@@ -16,7 +16,7 @@ ssh_source_cidr     = "10.0.0.0/8"
 
 tags = {
   Environment = "dev"
-  Project     = "azinfra"
+  Project     = "cloudinfra"
   Owner       = "devops-team"
   CostCenter  = "engineering"
 }

@@ -31,6 +31,7 @@ resource "azurerm_resource_group" "main" {
 module "networking" {
   source = "../../networking"
 
+  name_prefix         = "azure"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   vnet_name           = var.vnet_name
@@ -47,6 +48,7 @@ module "networking" {
 module "compute" {
   source = "../../compute"
 
+  name_prefix         = "azure"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
 

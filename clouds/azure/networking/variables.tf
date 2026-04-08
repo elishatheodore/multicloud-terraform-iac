@@ -1,5 +1,11 @@
 # Azure Networking Variables
 
+variable "name_prefix" {
+  type        = string
+  description = "Prefix for resource names"
+  default     = "azure"
+}
+
 variable "resource_group_name" {
   type        = string
   description = "Name of the Azure resource group"
@@ -14,7 +20,7 @@ variable "location" {
 variable "vnet_name" {
   type        = string
   description = "Name of the virtual network"
-  default     = "azinfra-vnet"
+  default     = "azure-vnet"
 }
 
 variable "vnet_address_space" {
@@ -26,7 +32,7 @@ variable "vnet_address_space" {
 variable "subnet_names" {
   type        = list(string)
   description = "Names of the subnets to create"
-  default     = ["azinfra-subnet", "azinfra-db-subnet"]
+  default     = ["azure-subnet", "azure-db-subnet"]
 }
 
 variable "subnet_prefixes" {

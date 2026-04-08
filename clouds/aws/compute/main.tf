@@ -23,7 +23,7 @@ resource "aws_instance" "main" {
   associate_public_ip_address = var.associate_public_ip_address
 
   tags = merge(var.tags, { 
-    Name = "azinfra-ec2-${count.index}"
+    Name = "${var.name_prefix}-ec2-${count.index}"
   })
 
   root_block_device {

@@ -3,7 +3,7 @@
 variable "project_name" {
   type        = string
   description = "Base name for all resources"
-  default     = "azinfra"
+  default     = "cloudinfra"
 }
 
 variable "environment" {

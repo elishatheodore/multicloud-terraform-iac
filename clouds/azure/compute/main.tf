@@ -12,10 +12,13 @@ provider "azurerm" {
   features {}
 }
 
+# This module creates Azure Virtual Machines with associated network interfaces
+# Network security is handled at the subnet level in the networking module
+
 # Network Interfaces for VMs
 resource "azurerm_network_interface" "vm_nic" {
   count               = var.vm_count
-  name                = "azinfra-nic-${count.index}"
+  name                = "${var.name_prefix}-nic-${count.index}"
   location            = var.location
   resource_group_name = var.resource_group_name
   tags                = var.tags
@@ -24,14 +27,13 @@ resource "azurerm_network_interface" "vm_nic" {
     name                          = "internal"
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    network_security_group_id     = var.nsg_id
   }
 }
 
 # Linux Virtual Machines
 resource "azurerm_linux_virtual_machine" "vm" {
   count               = var.vm_count
-  name                = "azinfra-vm-${count.index}"
+  name                = "${var.name_prefix}-vm-${count.index}"
   resource_group_name = var.resource_group_name
   location            = var.location
   size                = var.vm_size

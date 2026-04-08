@@ -17,11 +17,11 @@ provider "google" {
 # Compute Engine Instances
 resource "google_compute_instance" "main" {
   count        = var.instance_count
-  name         = "azinfra-vm-${count.index}"
+  name         = "${var.name_prefix}-vm-${count.index}"
   machine_type = var.machine_type
   zone         = var.zone
   tags         = var.tags
-  labels       = merge(var.labels, { name = "azinfra-vm-${count.index}" })
+  labels       = merge(var.labels, { name = "${var.name_prefix}-vm-${count.index}" })
 
   boot_disk {
     initialize_params {

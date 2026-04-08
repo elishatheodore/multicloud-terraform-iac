@@ -1,5 +1,11 @@
 # Azure Compute Variables
 
+variable "name_prefix" {
+  type        = string
+  description = "Prefix for resource names"
+  default     = "azure"
+}
+
 variable "resource_group_name" {
   type        = string
   description = "Name of the Azure resource group"

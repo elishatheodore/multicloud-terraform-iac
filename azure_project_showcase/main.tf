@@ -23,7 +23,7 @@ resource "azurerm_subnet" "main" {
 
 # Network Security Group for VM Subnet
 resource "azurerm_network_security_group" "vm_nsg" {
-  name                = "azinfra-vm-nsg"
+  name                = "${var.vnet_name}-app-nsg"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
@@ -60,7 +60,7 @@ resource "azurerm_subnet_network_security_group_association" "vm_subnet_nsg" {
 # Network Interfaces for VMs (assigned to first subnet)
 resource "azurerm_network_interface" "vm_nic" {
   count               = var.vm_count
-  name                = "azinfra-nic-${count.index}"
+  name                = "azure-nic-${count.index}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
@@ -75,7 +75,7 @@ resource "azurerm_network_interface" "vm_nic" {
 # Linux Virtual Machines
 resource "azurerm_linux_virtual_machine" "vm" {
   count               = var.vm_count
-  name                = "azinfra-vm-${count.index}"
+  name                = "azure-vm-${count.index}"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   size                = var.vm_size

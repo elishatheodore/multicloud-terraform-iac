@@ -1,5 +1,11 @@
 # AWS Compute Variables
 
+variable "name_prefix" {
+  type        = string
+  description = "Prefix for resource names"
+  default     = "aws"
+}
+
 variable "region" {
   type        = string
   description = "AWS region for deployment"

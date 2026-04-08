@@ -1,7 +1,7 @@
 # Resource Group
 variable "resource_group_name" {
   type    = string
-  default = "azinfra-rg"
+  default = "azure-rg"
 }
 
 variable "location" {
@@ -12,7 +12,7 @@ variable "location" {
 # Virtual Network
 variable "vnet_name" {
   type    = string
-  default = "azinfra-vnet"
+  default = "azure-vnet"
 }
 
 variable "vnet_address_space" {
@@ -23,7 +23,7 @@ variable "vnet_address_space" {
 # Subnets
 variable "subnet_names" {
   type    = list(string)
-  default = ["azinfra-subnet", "azinfra-db-subnet"]
+  default = ["azure-subnet", "azure-db-subnet"]
 }
 
 variable "subnet_prefixes" {

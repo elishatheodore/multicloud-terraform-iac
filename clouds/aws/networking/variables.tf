@@ -1,5 +1,11 @@
 # AWS Networking Variables
 
+variable "name_prefix" {
+  type        = string
+  description = "Prefix for resource names"
+  default     = "aws"
+}
+
 variable "region" {
   type        = string
   description = "AWS region for deployment"
@@ -9,7 +15,7 @@ variable "region" {
 variable "vpc_name" {
   type        = string
   description = "Name of the VPC"
-  default     = "azinfra-vpc"
+  default     = "aws-vpc"
 }
 
 variable "vpc_cidr" {
@@ -21,7 +27,7 @@ variable "vpc_cidr" {
 variable "subnet_names" {
   type        = list(string)
   description = "Names of the subnets to create"
-  default     = ["azinfra-subnet", "azinfra-db-subnet"]
+  default     = ["aws-subnet", "aws-db-subnet"]
 }
 
 variable "subnet_cidrs" {

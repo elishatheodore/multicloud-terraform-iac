@@ -4,7 +4,7 @@ output "resource_ids" {
   description = "Map of resource names to IDs"
   value = {
     vnet         = azurerm_virtual_network.main.id
-    nsg          = azurerm_network_security_group.vm_nsg.id
+    nsg          = azurerm_network_security_group.app_nsg.id
     subnets      = azurerm_subnet.main[*].id
   }
 }
@@ -62,5 +62,5 @@ output "database_subnet_id" {
 
 output "nsg_id" {
   description = "ID of the network security group"
-  value       = azurerm_network_security_group.vm_nsg.id
+  value       = azurerm_network_security_group.app_nsg.id
 }

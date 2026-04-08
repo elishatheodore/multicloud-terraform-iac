@@ -25,6 +25,7 @@ provider "aws" {
 module "networking" {
   source = "../../networking"
 
+  name_prefix     = "aws"
   region          = var.region
   vpc_name        = var.vpc_name
   vpc_cidr        = var.vpc_cidr
@@ -40,6 +41,7 @@ module "networking" {
 module "compute" {
   source = "../../compute"
 
+  name_prefix       = "aws"
   region            = var.region
 
   instance_count    = var.instance_count

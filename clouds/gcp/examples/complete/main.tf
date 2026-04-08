@@ -24,6 +24,7 @@ provider "google" {
 module "networking" {
   source = "../../networking"
 
+  name_prefix     = "gcp"
   project_id      = var.project_id
   region          = var.region
   
@@ -41,6 +42,7 @@ module "networking" {
 module "compute" {
   source = "../../compute"
 
+  name_prefix     = "gcp"
   project_id     = var.project_id
   region         = var.region
   zone           = var.zone
